@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MySchema",
+  "definitions": {
+    "Work": {
+      "type": "object",
+      "properties": {
+        "work": {
+          "type": "string"
+        },
+        "reps": {
+          "type": "integer"
+        },
+        "time": {
+          "type": "integer"
+        }
+      },
+      "exclusiveOr": [
+        {
+          "required": [
+            "reps"
+          ]
+        },
+        {
+          "required": [
+            "time"
+          ]
+        }
+      ]
+    },
+    "Group": {
+      "type": "object",
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/Work"
+              },
+              {
+                "$ref": "#/definitions/Group"
+              }
+            ]
+          }
+        },
+        "group": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "plan": {
+      "anyOf": [{"$ref": "#/definitions/Group"}, {"type":"array", "items": {"$ref": "#/definitions/Group"}}]
+    }
+  }
+}
